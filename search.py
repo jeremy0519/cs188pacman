@@ -90,7 +90,7 @@ def depthFirstSearch(problem: SearchProblem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-
+    # 第一种写法：DFS (Iterative)
     visited = set()
     stack = util.Stack()  # 队列的值形为(坐标(1,2), 到这个点的路径('L','R','L'))
     stack.push((problem.getStartState(), []))  # 初始化 起点入队
@@ -99,7 +99,7 @@ def depthFirstSearch(problem: SearchProblem):
         now = stack.pop()
 
         # *** *** *** *** *** ***
-        visited.add(now[0])  # 这里visited只算正在展开的
+        visited.add(now[0])  # 注意了 When to mark visit? At pop
         # *** *** *** *** *** ***
 
         if problem.isGoalState(now[0]):
@@ -107,11 +107,31 @@ def depthFirstSearch(problem: SearchProblem):
             return now[1]
         for nbr in problem.getSuccessors(now[0]):
             if nbr[0] in visited:
-                continue  # visit过不重复走
+                continue
             stack.push((nbr[0], now[1] + [nbr[1]]))
-    print("找不到路")
+    print("dfs找不到路")
     return []  # 找不到路
 
+    # 第二种写法 DFS (Recursive)
+    # visited = set()
+    # path = []
+
+    # def dfs(node):
+    #     visited.add(node)  # 同上 When to mark visited? At pop
+    #     if problem.isGoalState(node):
+    #         # 到达终点
+    #         return True
+    #     for nbr in problem.getSuccessors(node):
+    #         if nbr[0] in visited:
+    #             continue
+    #         path.append(nbr[1])  # 添加到这个点的路
+    #         if dfs(nbr[0]):
+    #             return True  # True代表已经找到，此时True会一层一层往上propogate，都会return True，不会执行后面的pop(-1)
+    #         path.pop(-1)  # 这个点下面的所有都return了False，因此一定没法到终点，path里删去这个点
+    #     return False  # 没法到达终点，这个False会被上层使用
+
+    # dfs(problem.getStartState())
+    # return path
     util.raiseNotDefined()
 
 
@@ -130,14 +150,14 @@ def breadthFirstSearch(problem: SearchProblem):
             return now[1]
         for nbr in problem.getSuccessors(now[0]):
             if nbr[0] in visited:
-                continue  # visit过不重复走
+                continue
 
             # *** *** *** *** *** ***
-            visited.add(nbr[0])  # 这里visited为所有见到过的都算
+            visited.add(nbr[0])  # When mark visit? At push
             # *** *** *** *** *** ***
 
             queue.push((nbr[0], now[1] + [nbr[1]]))
-    print("找不到路")
+    print("bfs找不到路")
     return []  # 找不到路
 
     util.raiseNotDefined()
