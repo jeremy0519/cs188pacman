@@ -168,34 +168,33 @@ def uniformCostSearch(problem: SearchProblem):
     from collections import defaultdict
 
     visited = set()
-    priority = defaultdict(int)  # 记录这个点的priority
+    backward_cost = defaultdict(int)  # 记录这个点的priority
     paths = defaultdict(int)  # 记录到这个点的路径
-    priority[problem.getStartState()] = 0
+    backward_cost[problem.getStartState()] = 0
     paths[problem.getStartState()] = []
-    priorityqueue = (
-        util.PriorityQueue()
-    )  # 优先队列只存坐标: Tuple, 到这个点的路径和cumulative cost都不存
+    priorityqueue = util.PriorityQueue()  # 优先队列只存坐标: Tuple
     priorityqueue.push(item=problem.getStartState(), priority=0)  # 初始化 起点入队
     while not priorityqueue.isEmpty():
         now = priorityqueue.pop()
         visited.add(now)  ##### mark visited at pop
         # print("now=", now)
-        if problem.isGoalState(now):
-            # 到达终点
+        if problem.isGoalState(now):  # 到达终点
             return paths[now]
         for nbr in problem.getSuccessors(now):
             if nbr[0] in visited:
                 continue
-            if nbr[0] in priority:  # priority字典里有nbr.coordinates才有的比
+            if nbr[0] in backward_cost:  # priority字典里得有nbr.coordinates才有的比
                 if (
-                    priority[now] + nbr[2] < priority[nbr[0]]
+                    backward_cost[now] + nbr[2] < backward_cost[nbr[0]]
                 ):  # 新priority更小，需要更新
-                    priority[nbr[0]] = priority[now] + nbr[2]
-                    paths[nbr[0]] = paths[now] + [nbr[1]]  # paths同步更新
+                    backward_cost[nbr[0]] = backward_cost[now] + nbr[2]
+                    paths[nbr[0]] = paths[now] + [nbr[1]]  # paths同步也要更新
             else:
-                priority[nbr[0]] = priority[now] + nbr[2]  # 没得比，只能是从now走过来
+                backward_cost[nbr[0]] = (
+                    backward_cost[now] + nbr[2]
+                )  # 没得比，只能是从now走过来
                 paths[nbr[0]] = paths[now] + [nbr[1]]
-            priorityqueue.update(item=nbr[0], priority=priority[nbr[0]])
+            priorityqueue.update(item=nbr[0], priority=backward_cost[nbr[0]])
     print("ucs找不到路")
     return []  # 找不到路
     util.raiseNotDefined()
@@ -212,6 +211,46 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
+    from collections import defaultdict
+
+    visited = set()
+    backward_cost = defaultdict(int)  # 记录这个点的priority
+    paths = defaultdict(int)  # 记录到这个点的路径
+    backward_cost[problem.getStartState()] = 0
+    paths[problem.getStartState()] = []
+    priorityqueue = (
+        util.PriorityQueue()
+    )  # 优先队列只存坐标: Tuple, 到这个点的路径和cumulative cost都不存
+    priorityqueue.push(
+        item=problem.getStartState(),
+        priority=0 + heuristic(problem.getStartState(), problem),
+    )  # 初始化 起点入队
+    while not priorityqueue.isEmpty():
+        now = priorityqueue.pop()
+        visited.add(now)  ##### mark visited at pop
+        # print("now=", now)
+        if problem.isGoalState(now):
+            # 到达终点
+            return paths[now]
+        for nbr in problem.getSuccessors(now):
+            if nbr[0] in visited:
+                continue
+            if nbr[0] in backward_cost:  # priority字典里有nbr.coordinates才有的比
+                if (
+                    backward_cost[now] + nbr[2] < backward_cost[nbr[0]]
+                ):  # 新priority更小，需要更新
+                    backward_cost[nbr[0]] = backward_cost[now] + nbr[2]
+                    paths[nbr[0]] = paths[now] + [nbr[1]]  # paths同步更新
+            else:
+                backward_cost[nbr[0]] = (
+                    backward_cost[now] + nbr[2]
+                )  # 没得比，只能是从now走过来
+                paths[nbr[0]] = paths[now] + [nbr[1]]
+            priorityqueue.update(
+                item=nbr[0], priority=backward_cost[nbr[0]] + heuristic(nbr[0], problem)
+            )
+    print("ucs找不到路")
+    return []  # 找不到路
     util.raiseNotDefined()
 
 
