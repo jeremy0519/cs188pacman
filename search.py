@@ -95,7 +95,6 @@ def depthFirstSearch(problem: SearchProblem):
     stack = util.Stack()  # 队列的值形为(坐标(1,2), 到这个点的路径('L','R','L'))
     stack.push((problem.getStartState(), []))  # 初始化 起点入队
     while not stack.isEmpty():
-        # 一次操作为pop掉队列里最先进来的一个，放入visited，检查是否到终点，放入successors中没visit的
         now = stack.pop()
 
         # *** *** *** *** *** ***
@@ -143,7 +142,6 @@ def breadthFirstSearch(problem: SearchProblem):
     queue = util.Queue()  # 队列的值形为(坐标(1,2), 到这个点的路径('L','R','L'))
     queue.push((problem.getStartState(), []))  # 初始化 起点入队
     while not queue.isEmpty():
-        # 一次操作为pop掉队列里最先进来的一个，放入visited，检查是否到终点，放入successors中没visit的
         now = queue.pop()
         if problem.isGoalState(now[0]):
             # 到达终点
@@ -166,6 +164,40 @@ def breadthFirstSearch(problem: SearchProblem):
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
+
+    from collections import defaultdict
+
+    visited = set()
+    priority = defaultdict(int)  # 记录这个点的priority
+    paths = defaultdict(int)  # 记录到这个点的路径
+    priority[problem.getStartState()] = 0
+    paths[problem.getStartState()] = []
+    priorityqueue = (
+        util.PriorityQueue()
+    )  # 优先队列只存坐标: Tuple, 到这个点的路径和cumulative cost都不存
+    priorityqueue.push(item=problem.getStartState(), priority=0)  # 初始化 起点入队
+    while not priorityqueue.isEmpty():
+        now = priorityqueue.pop()
+        visited.add(now)  ##### mark visited at pop
+        # print("now=", now)
+        if problem.isGoalState(now):
+            # 到达终点
+            return paths[now]
+        for nbr in problem.getSuccessors(now):
+            if nbr[0] in visited:
+                continue
+            if nbr[0] in priority:  # priority字典里有nbr.coordinates才有的比
+                if (
+                    priority[now] + nbr[2] < priority[nbr[0]]
+                ):  # 新priority更小，需要更新
+                    priority[nbr[0]] = priority[now] + nbr[2]
+                    paths[nbr[0]] = paths[now] + [nbr[1]]  # paths同步更新
+            else:
+                priority[nbr[0]] = priority[now] + nbr[2]  # 没得比，只能是从now走过来
+                paths[nbr[0]] = paths[now] + [nbr[1]]
+            priorityqueue.update(item=nbr[0], priority=priority[nbr[0]])
+    print("ucs找不到路")
+    return []  # 找不到路
     util.raiseNotDefined()
 
 
