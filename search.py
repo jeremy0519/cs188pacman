@@ -96,13 +96,9 @@ def depthFirstSearch(problem: SearchProblem):
     stack.push((problem.getStartState(), []))  # 初始化 起点入队
     while not stack.isEmpty():
         now = stack.pop()
-        if now[0] in visited:
+        if now[0] in visited:  ###### Check visit at pop
             continue
-
-        # *** *** *** *** *** ***
-        visited.add(now[0])  # 注意了 When to mark visit? At pop
-        # *** *** *** *** *** ***
-
+        visited.add(now[0])  ###### Mark visit at pop
         if problem.isGoalState(now[0]):
             # 到达终点
             return now[1]
@@ -111,11 +107,13 @@ def depthFirstSearch(problem: SearchProblem):
     print("dfs找不到路")
     return []  # 找不到路
 
-    # 第二种写法 DFS (Recursive)
+    # # 第二种写法 DFS (Recursive)
     # visited = set()
     # path = []
 
     # def dfs(node):
+    #     if node in visited:
+    #         return
     #     visited.add(node)  # 同上 When to mark visited? At pop
     #     if problem.isGoalState(node):
     #         # 到达终点
@@ -126,7 +124,9 @@ def depthFirstSearch(problem: SearchProblem):
     #         path.append(nbr[1])  # 添加到这个点的路
     #         if dfs(nbr[0]):
     #             return True  # True代表已经找到，此时True会一层一层往上propogate，都会return True，不会执行后面的pop(-1)
-    #         path.pop(-1)  # 这个点下面的所有都return了False，因此一定没法到终点，path里删去这个点
+    #         path.pop(
+    #             -1
+    #         )  # 这个点下面的所有都return了False，因此一定没法到终点，path里删去这个点
     #     return False  # 没法到达终点，这个False会被上层使用
 
     # dfs(problem.getStartState())
@@ -138,22 +138,19 @@ def breadthFirstSearch(problem: SearchProblem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
 
-    visited = set()  # 初始化 起点已经visit
+    visited = set(problem.getStartState())  # 初始化 起点已经visit
     queue = util.Queue()  # 队列的值形为(坐标(1,2), 到这个点的路径('L','R','L'))
     queue.push((problem.getStartState(), []))  # 初始化 起点入队
     while not queue.isEmpty():
         now = queue.pop()
-        if now[0] in visited:
-            continue
-        visited.add(now[0])
         if problem.isGoalState(now[0]):
             # 到达终点
             return now[1]
         for nbr in problem.getSuccessors(now[0]):
+            if nbr[0] in visited:  ####### Check visit at push
+                continue
 
-            # *** *** *** *** *** ***
-            # visited.add(nbr[0])  # When mark visit? At push
-            # *** *** *** *** *** ***
+            visited.add(nbr[0])  ###### Mark visit at push
 
             queue.push((nbr[0], now[1] + [nbr[1]]))
     print("bfs找不到路")
@@ -177,12 +174,12 @@ def uniformCostSearch(problem: SearchProblem):
     priorityqueue.push(item=problem.getStartState(), priority=0)  # 初始化 起点入队
     while not priorityqueue.isEmpty():
         now = priorityqueue.pop()
-        if now in visited:
-            continue
-        visited.add(now)  ##### mark visited at pop
+        visited.add(now)  ##### mark visit at pop
         if problem.isGoalState(now):  # 到达终点
             return paths[now]
         for nbr in problem.getSuccessors(now):
+            if nbr[0] in visited:  ##### check visit at push
+                continue
             if nbr[0] in backward_cost:  # priority字典里得有nbr.coordinates才有的比
                 if (
                     backward_cost[now] + nbr[2] < backward_cost[nbr[0]]
@@ -227,15 +224,14 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     )  # 初始化 起点入队
     while not priorityqueue.isEmpty():
         now = priorityqueue.pop()
-        if now in visited:
-            continue
         visited.add(now)  ##### mark visited at pop
         # print("now=", now)
         if problem.isGoalState(now):
             # 到达终点
             return paths[now]
         for nbr in problem.getSuccessors(now):
-
+            if nbr[0] in visited:
+                continue  ##### Check visited at push
             if nbr[0] in backward_cost:  # priority字典里有nbr.coordinates才有的比
                 if (
                     backward_cost[now] + nbr[2] < backward_cost[nbr[0]]
