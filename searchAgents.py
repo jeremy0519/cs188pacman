@@ -34,6 +34,8 @@ description for details.
 Good luck and happy searching!
 """
 
+from re import M
+from turtle import pos
 from typing import List, Tuple, Any
 from game import Directions
 from game import Agent
@@ -431,8 +433,56 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
     """
     corners = problem.corners  # These are the corner coordinates
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
+    width = walls.width - 2
+    height = walls.height - 2
 
-    return 0  # Default to trivial solution
+    def ManhattanToCorner(corners: tuple[tuple]):
+        """
+        返回从position到corners元组中所有corner的最小值
+        """
+        return min([util.manhattanDistance(state[0], corner) for corner in corners])
+
+    # print("cornerheruistics收到传入position", state[0])
+
+    match sum(state[1]):
+        case 0:  # 四个都没走到过
+            # 算完minManhattanToCorner后此时已经站在一个角落
+            ans = (
+                ManhattanToCorner(corners)
+                + width
+                - 1
+                + height
+                - 1
+                + min(width, height)
+                - 1
+            )
+            # print(state[1], "heu=", ans)
+            return ans
+        case 1:  # 三个没走到
+            i = state[1].index(True)  # corners[i]和[3-i]不能去
+            available_corners = []
+            for j in range(3):
+                if not j == i and not j == 3 - i:
+                    available_corners.append(corners[j])
+            ans = ManhattanToCorner(available_corners) + width - 1 + height - 1
+            # print(state[1])
+            # print("heu=", ans)
+            return ans
+        case 2:  # 两个没走到
+            # print(state[1])
+            not_visited_corners = [corners[i] for i in range(4) if state[1][i] == False]
+            # print(not_visited_corners)
+            ans = ManhattanToCorner(not_visited_corners) + util.manhattanDistance(
+                not_visited_corners[0], not_visited_corners[1]
+            )
+            # print("heu=", ans)
+            return ans
+        case 3:  # 一个没走到
+            not_visited_corners = [corners[i] for i in range(4) if state[1][i] == False]
+            return ManhattanToCorner(not_visited_corners)
+        case 4:
+            return 0
+    # return 0  # Default to trivial solution
 
 
 class AStarCornersAgent(SearchAgent):
