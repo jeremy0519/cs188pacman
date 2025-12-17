@@ -320,6 +320,13 @@ def euclideanHeuristic(position, problem, info={}):
 #####################################################
 
 
+def minManhattanToPoints(position: tuple, points: tuple[tuple]):
+    """
+    返回从position到corners元组中所有corner的最小值
+    """
+    return min([util.manhattanDistance(position, point) for point in points])
+
+
 class CornersProblem(search.SearchProblem):
     """
     This search problem finds paths through all four corners of a layout.
@@ -436,19 +443,13 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
     width = walls.width - 2
     height = walls.height - 2
 
-    def ManhattanToCorner(corners: tuple[tuple]):
-        """
-        返回从position到corners元组中所有corner的最小值
-        """
-        return min([util.manhattanDistance(state[0], corner) for corner in corners])
-
     # print("cornerheruistics收到传入position", state[0])
 
     match sum(state[1]):
         case 0:  # 四个都没走到过
             # 算完minManhattanToCorner后此时已经站在一个角落
             ans = (
-                ManhattanToCorner(corners)
+                minManhattanToPoints(state[0], corners)
                 + width
                 - 1
                 + height
@@ -464,7 +465,13 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
             for j in range(3):
                 if not j == i and not j == 3 - i:
                     available_corners.append(corners[j])
-            ans = ManhattanToCorner(available_corners) + width - 1 + height - 1
+            ans = (
+                minManhattanToPoints(state[0], available_corners)
+                + width
+                - 1
+                + height
+                - 1
+            )
             # print(state[1])
             # print("heu=", ans)
             return ans
@@ -472,14 +479,14 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
             # print(state[1])
             not_visited_corners = [corners[i] for i in range(4) if state[1][i] == False]
             # print(not_visited_corners)
-            ans = ManhattanToCorner(not_visited_corners) + util.manhattanDistance(
-                not_visited_corners[0], not_visited_corners[1]
-            )
+            ans = minManhattanToPoints(
+                state[0], not_visited_corners
+            ) + util.manhattanDistance(not_visited_corners[0], not_visited_corners[1])
             # print("heu=", ans)
             return ans
         case 3:  # 一个没走到
             not_visited_corners = [corners[i] for i in range(4) if state[1][i] == False]
-            return ManhattanToCorner(not_visited_corners)
+            return minManhattanToPoints(state[0], not_visited_corners)
         case 4:
             return 0
     # return 0  # Default to trivial solution
@@ -511,7 +518,10 @@ class FoodSearchProblem:
         self.walls = startingGameState.getWalls()
         self.startingGameState = startingGameState
         self._expanded = 0  # DO NOT CHANGE
-        self.heuristicInfo = {}  # A dictionary for the heuristic to store information
+        # Added by Jeremy
+        self.heuristicInfo = {
+            "startingGameState": startingGameState
+        }  # A dictionary for the heuristic to store information
 
     def getStartState(self):
         return self.start
@@ -590,8 +600,70 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
+    foodList = foodGrid.asList()
     "*** YOUR CODE HERE ***"
-    return 0
+
+    # expand node 1130
+
+    if len(foodList) == 0:
+        return 0
+    maxToFood = max(
+        [
+            mazeDistance(position, food, problem.heuristicInfo["startingGameState"])
+            for food in foodList
+        ]
+    )
+    from math import inf
+
+    if frozenset(foodList) in problem.heuristicInfo:
+        maxAmongFoods = problem.heuristicInfo[frozenset(foodList)]
+    else:
+        maxAmongFoods = -inf
+        for i, elei in enumerate(foodList):
+            for _, elej in enumerate(foodList[i + 1 :]):
+                maxAmongFoods = max(
+                    maxAmongFoods,
+                    mazeDistance(
+                        elei, elej, problem.heuristicInfo["startingGameState"]
+                    ),
+                )
+        problem.heuristicInfo[frozenset(foodList)] = maxAmongFoods
+    return max(maxAmongFoods, maxToFood)
+
+    # 可行方法 expand node 4137
+    # return (
+    #     0
+    #     if len(foodList) == 0
+    #     else max(
+    #         [
+    #             mazeDistance(position, food, problem.heuristicInfo["startingGameState"])
+    #             for food in foodList
+    #         ]
+    #     )
+    # )
+
+    # 一开始暴力做法做完整路径，太太太慢了O(n!)
+
+    # from math import inf
+    # def minToFoods(start: tuple, foods: list):
+    #     def min(a, b):
+    #         return a if a < b else b
+
+    #     ans = inf
+    #     if len(foods) == 0:
+    #         # print("foods为空")
+    #         return 0
+    #     for i, testnext in enumerate(foods):
+    #         if start == testnext:
+    #             # print("尝试点与起点相同，continue")
+    #             continue  # 下一个尝试点与起点相同，不要
+    #         ans = min(
+    #             ans,
+    #             util.manhattanDistance(start, testnext)
+    #             + minToFoods(testnext, tuple(foods[:i] + foods[i + 1 :])),
+    #         )
+    #     return 0 if ans == inf else ans
+    # return minToFoods(position, tuple(foodList))
 
 
 class ClosestDotSearchAgent(SearchAgent):
@@ -628,7 +700,7 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return search.bfs(problem)
 
 
 class AnyFoodSearchProblem(PositionSearchProblem):
@@ -665,6 +737,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x, y = state
 
         "*** YOUR CODE HERE ***"
+        return state in self.food.asList()
         util.raiseNotDefined()
 
 
