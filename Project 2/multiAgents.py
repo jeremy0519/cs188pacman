@@ -170,6 +170,50 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns whether or not the game state is a losing state
         """
         "*** YOUR CODE HERE ***"
+        from math import inf
+
+        numAgents = gameState.getNumAgents()
+
+        def value_max(state: GameState, depth: int):
+            # agentIndex一定为0
+            currentMax = -inf
+            for successorAction in state.getLegalActions(0):
+                successorState = state.generateSuccessor(0, successorAction)
+                successorScore = value(successorState, depth + 1)[0]
+                if successorScore > currentMax:
+                    currentMax = successorScore
+                    move = successorAction
+            return (currentMax, move)
+
+        def value_min(state: GameState, depth: int):
+            currentMin = inf
+            agentIndex = depth % numAgents
+            for successorAction in state.getLegalActions(agentIndex):
+                successorState = state.generateSuccessor(agentIndex, successorAction)
+                successorScore = value(successorState, depth + 1)[0]
+                if successorScore < currentMin:
+                    currentMin = successorScore
+                    move = successorAction
+            return (currentMin, move)
+
+        def value(state: GameState, depth: int):
+            """
+            返回节点的minimax值
+            格式为(value, action)  即同时存储为了达到value的下一步action
+            """
+            agentIndex = depth % numAgents
+            if depth == numAgents * self.depth:  # 到达终点
+                return (self.evaluationFunction(state), None)
+            if state.isWin():
+                return (self.evaluationFunction(state), None)
+            if state.isLose():
+                return (self.evaluationFunction(state), None)
+            if agentIndex == 0:  # 这一层为pacman走，要最大化
+                return value_max(state, depth)
+            else:  # 这一层为ghost走，要最小化
+                return value_min(state, depth)
+
+        return value(gameState, 0)[1]
         util.raiseNotDefined()
 
 
