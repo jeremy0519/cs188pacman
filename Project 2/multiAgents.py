@@ -14,7 +14,8 @@
 
 from util import manhattanDistance
 from game import Directions
-import random, util
+import random
+import util
 
 from game import Agent
 from pacman import GameState
@@ -48,7 +49,8 @@ class ReflexAgent(Agent):
         bestIndices = [
             index for index in range(len(scores)) if scores[index] == bestScore
         ]
-        chosenIndex = random.choice(bestIndices)  # Pick randomly among the best
+        # Pick randomly among the best
+        chosenIndex = random.choice(bestIndices)
 
         "Add more of your code here if you want to"
 
@@ -227,6 +229,78 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         Returns the minimax action using self.depth and self.evaluationFunction
         """
         "*** YOUR CODE HERE ***"
+        from math import inf
+
+        numAgents = gameState.getNumAgents()
+
+        def value_max(state: GameState, depth: int, alpha: int, beta: int):
+            """
+            大于beta就肯定不会被考虑
+            """
+            # agentIndex一定为0
+            currentMax = -inf
+            for successorAction in state.getLegalActions(0):
+                # 要取successorScores中最大
+                successorState = state.generateSuccessor(0, successorAction)
+                successorScore = value(successorState, depth + 1, alpha, beta)[0]
+                if (
+                    successorScore > beta
+                ):  # 因为有一个successor大于beta，当前层又是successor中取最大，所以当前层也大于beta，当前层不会被考虑了
+                    return (
+                        123456789,
+                        None,
+                    )  # 反正也不会被考虑，随便一个大于等于beta的数都可以
+                if successorScore > currentMax:  # 运行到这里说明正常情况
+                    currentMax = successorScore
+                    alpha = max(
+                        alpha, currentMax
+                    )  # 不能直接alpha=currentMax否则会丢失父节点传下来的alpha信息
+                    move = successorAction
+                # 在这行更新alpha也可以，但是没必要因为currentMax没变
+            return (currentMax, move)
+
+        def value_min(state: GameState, depth: int, alpha: int, beta: int):
+            """
+            小于alpha就肯定不会被考虑
+            """
+            currentMin = inf
+            agentIndex = depth % numAgents
+            for successorAction in state.getLegalActions(agentIndex):
+                successorState = state.generateSuccessor(agentIndex, successorAction)
+                successorScore = value(successorState, depth + 1, alpha, beta)[0]
+                if successorScore < alpha:
+                    return (-123456789, None)
+                if successorScore < currentMin:
+                    currentMin = successorScore
+                    beta = min(beta, currentMin)
+                    move = successorAction
+            return (currentMin, move)
+
+        def value(state: GameState, depth: int, alpha: int, beta: int):
+            """
+            返回节点的minimax值 (带alpha-beta pruning)
+            格式为(value, action)  即同时存储为了达到value的下一步action
+
+            alpha和beta都在他们之上
+
+            :param alpha: MAX's best option on path to root
+            :type alpha: int
+            :param beta: MIN's best option on path to root
+            :type beta: int
+            """
+            agentIndex = depth % numAgents
+            if depth == numAgents * self.depth:  # 到达终点
+                return (self.evaluationFunction(state), None)
+            if state.isWin():
+                return (self.evaluationFunction(state), None)
+            if state.isLose():
+                return (self.evaluationFunction(state), None)
+            if agentIndex == 0:  # 这一层为pacman走，要最大化
+                return value_max(state, depth, alpha, beta)
+            else:  # 这一层为ghost走，要最小化
+                return value_min(state, depth, alpha, beta)
+
+        return value(gameState, 0, -inf, inf)[1]
         util.raiseNotDefined()
 
 
