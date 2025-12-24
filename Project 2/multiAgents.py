@@ -370,8 +370,18 @@ def betterEvaluationFunction(currentGameState: GameState):
     evaluation function (question 5).
 
     DESCRIPTION: <write something here so we know what you did>
+    计算到food的最小距离并取倒数，距离越小score越大
     """
     "*** YOUR CODE HERE ***"
+    position = currentGameState.getPacmanPosition()
+    food = currentGameState.getFood()
+    if food.asList():
+        distance_to_nearest_food = min(
+            manhattanDistance(position, foodPos) for foodPos in food.asList()
+        )
+    else:
+        distance_to_nearest_food = 0.001
+    return currentGameState.getScore() + 1 / distance_to_nearest_food
     util.raiseNotDefined()
 
 
