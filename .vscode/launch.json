@@ -8,10 +8,9 @@
       "name": "Pacman Debug",
       "type": "debugpy",
       "request": "launch",
-      "program": "pacman.py",
-      "cwd": "${workspaceFolder}/Project 2",
+      "program": "Project 3/gridworld.py",
       "console": "integratedTerminal",
-      "args": "-p MinimaxAgent -l smallClassic "
+      "args": "-a value -i 100"
     }
   ]
 }
