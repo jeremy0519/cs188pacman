@@ -145,3 +145,44 @@ class PrioritizedSweepingValueIterationAgent(ValueIterationAgent):
 
     def runValueIteration(self):
         "*** YOUR CODE HERE ***"
+        from collections import defaultdict
+
+        def computeValueOfState(state):
+            """
+            Computes what the value of a state should be by returning maximum of Q-values
+            """
+            return max(
+                ValueIterationAgent.computeQValueFromValues(self, state, action)
+                for action in self.mdp.getPossibleActions(state)
+            )
+
+        # find predecessor for each state
+        predecessors = defaultdict(set)
+        for from_state in self.mdp.getStates():
+            for action in self.mdp.getPossibleActions(from_state):
+                for to_state, prob in self.mdp.getTransitionStatesAndProbs(
+                    from_state, action
+                ):
+                    if prob != 0:
+                        predecessors[to_state].add(from_state)
+
+        # Initialize empty Priority Queue
+        queue = util.PriorityQueue()
+
+        # 标记所有non-terminal states为待更新
+        for state in self.mdp.getStates():
+            if not self.mdp.isTerminal(state):
+                diff = abs(computeValueOfState(state) - self.values[state])
+                queue.update(state, -diff)
+
+        # 更新queue中states到正确值
+        for _ in range(self.iterations):
+            if queue.isEmpty():
+                break
+            state = queue.pop()  # state一定不会是终点
+            self.values[state] = computeValueOfState(state)
+            for predecessor in predecessors[state]:
+                # 标记predecessor为待更新
+                diff = abs(computeValueOfState(predecessor) - self.values[predecessor])
+                if diff > self.theta:
+                    queue.update(predecessor, -diff)

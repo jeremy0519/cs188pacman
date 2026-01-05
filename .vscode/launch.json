@@ -8,9 +8,10 @@
       "name": "Pacman Debug",
       "type": "debugpy",
       "request": "launch",
-      "program": "Project 3/gridworld.py",
+      "program": "autograder.py",
+      "cwd": "${workspaceFolder}/Project 3",
       "console": "integratedTerminal",
-      "args": "-a value -i 100"
+      "args": "-q q4"
     }
   ]
 }
