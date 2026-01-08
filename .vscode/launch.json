@@ -8,10 +8,10 @@
       "name": "Pacman Debug",
       "type": "debugpy",
       "request": "launch",
-      "program": "autograder.py",
+      "program": "pacman.py",
       "cwd": "${workspaceFolder}/Project 3",
       "console": "integratedTerminal",
-      "args": "-q q5"
+      "args": "-p ApproximateQAgent -x 2000 -n 2010 -l smallGrid"
     }
   ]
 }
