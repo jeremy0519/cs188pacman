@@ -1,0 +1,547 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head><script async='' type='text/javascript' src='https://siteimproveanalytics.com/js/siteanalyze_6294756.js'></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <link rel="stylesheet" href="../../../assets/css/just-the-docs-default.css">
+
+  <link rel="stylesheet" href="../../../assets/css/just-the-docs-head-nav.css" id="jtd-head-nav-stylesheet">
+
+  <style id="jtd-nav-activation">
+  
+
+    .site-nav > ul.nav-list:first-child > li > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li > a,
+    
+    .site-nav > ul.nav-list:first-child > li > ul > li > ul > li:not(:nth-child(2)) > a,
+    .site-nav > ul.nav-list:first-child > li > ul > li > ul > li > ul > li a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:not(:first-child) a,
+    .site-nav li.external a {
+      background-image: none;
+    }
+
+    .site-nav > ul.nav-list:first-child > li:nth-child(6) > ul > li:nth-child(1) > ul > li:nth-child(2) > a {
+      font-weight: 600;
+      text-decoration: none;
+    }.site-nav > ul.nav-list:first-child > li:nth-child(6) > button svg,
+    .site-nav > ul.nav-list:first-child > li:nth-child(6) > ul > li:nth-child(1) > button svg,
+    .site-nav > ul.nav-list:first-child > li:nth-child(6) > ul > li:nth-child(1) > ul > li:nth-child(2) > button svg {
+      transform: rotate(-90deg);
+    }.site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(6) > ul.nav-list,
+    .site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(6) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list,
+    .site-nav > ul.nav-list:first-child > li.nav-list-item:nth-child(6) > ul.nav-list > li.nav-list-item:nth-child(1) > ul.nav-list > li.nav-list-item:nth-child(2) > ul.nav-list {
+      display: block;
+    }
+  </style>
+
+  
+
+  
+    <script src="../../../assets/js/vendor/lunr.min.js"></script>
+  
+
+  <script src="../../../assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+  <link rel="icon" href="../../../favicon.ico" type="image/x-icon">
+
+
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Terminal Workflow | CS 188 Fall 2025</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Terminal Workflow" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Terminal Workflow Example." />
+<meta property="og:description" content="Terminal Workflow Example." />
+<link rel="canonical" href="https://inst.eecs.berkeley.edu/~cs188/fa25/~cs188/fa25/projects/proj0/terminal-workflow/" />
+<meta property="og:url" content="https://inst.eecs.berkeley.edu/~cs188/fa25/~cs188/fa25/projects/proj0/terminal-workflow/" />
+<meta property="og:site_name" content="CS 188 Fall 2025" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Terminal Workflow" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Terminal Workflow Example.","headline":"Terminal Workflow","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://inst.eecs.berkeley.edu/~cs188/fa25/~cs188/fa25/assets/images/logo.png"}},"url":"https://inst.eecs.berkeley.edu/~cs188/fa25/~cs188/fa25/projects/proj0/terminal-workflow/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <link
+  rel="preload"
+  href="../../../assets/css/just-the-docs-dark.css"
+  as="style"
+>
+
+<!-- Intentionally duplicates the default theme stylesheet so there's a fallback when changing themes -->
+<link
+  id="jtdThemeCSS"
+  rel="stylesheet"
+  href="../../../assets/css/just-the-docs-default.css"
+>
+
+<script>
+  /* Script to enable persistent dark mode. */
+
+  jtd.getTheme = function () {
+    var cssFileHref = (
+      document.getElementById('jtdThemeCSS') || document.querySelector('[rel="stylesheet"]')
+    ).getAttribute('href');
+    return cssFileHref.substring(cssFileHref.lastIndexOf('-') + 1, cssFileHref.length - 4);
+  };
+
+  jtd.setTheme = function (theme) {
+    var cssFile = document.getElementById('jtdThemeCSS') || document.querySelector('[rel="stylesheet"]');
+    cssFile.setAttribute('href', cssFile.getAttribute('href').replace(jtd.getTheme(), theme));
+  };
+
+  let toggleDark = () => {
+    let setDark = jtd.getTheme() !== 'dark';
+    document.documentElement.setAttribute('data-theme', setDark ? 'dark' : 'default');
+    document.documentElement.setAttribute('data-theme', setDark ? 'dark' : 'default');
+    jtd.setTheme(setDark ? 'dark' : 'default');
+    localStorage.setItem('darkMode', String(setDark));
+
+    if (typeof calendar !== 'undefined') {
+      calendar.setColorScheme(setDark ? 'dark' : 'light');
+    }
+  };
+
+  if (localStorage.getItem('darkMode') === 'true') {
+    toggleDark();
+  }
+</script>
+
+<!-- Script for LaTeX rendering. -->
+<link
+  rel="stylesheet"
+  href="../../../assets/katex/katex.min.css"
+>
+<script defer src="../../../assets/katex/katex.min.js"></script>
+<script>
+  function renderKaTeX() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '\\[', right: '\\]', display: true },
+      ],
+    });
+  }
+</script>
+<script
+  defer
+  src="../../../assets/katex/contrib/auto-render.min.js"
+  onload="renderKaTeX();"
+></script>
+
+
+</head>
+
+<body>
+  <a class="skip-to-main" href="../terminal-workflow.html#main-content">Skip to main content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="svg-link" viewBox="0 0 24 24">
+  <title>Link</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+  </svg>
+</symbol>
+
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+  <title>Menu</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+    <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+</symbol>
+
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+  <title>Expand</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+</symbol>
+
+  <!-- Feather. MIT License: https://github.com/feathericons/feather/blob/master/LICENSE -->
+<symbol id="svg-external-link" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+  <title id="svg-external-link-title">(external link)</title>
+  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+</symbol>
+
+  
+    <symbol id="svg-doc" viewBox="0 0 24 24">
+  <title>Document</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+  </svg>
+</symbol>
+
+    <symbol id="svg-search" viewBox="0 0 24 24">
+  <title>Search</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</symbol>
+
+  
+  
+    <!-- Bootstrap Icons. MIT License: https://github.com/twbs/icons/blob/main/LICENSE.md -->
+<symbol id="svg-copy" viewBox="0 0 16 16">
+  <title>Copy</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+  </svg>
+</symbol>
+<symbol id="svg-copied" viewBox="0 0 16 16">
+  <title>Copied</title>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
+  </svg>
+</symbol>
+
+  
+</svg>
+
+  
+    <div class="side-bar">
+  <div class="site-header" role="banner">
+    <a href="../../../index.html" class="site-title lh-tight">
+
+
+  <img src="../../../assets/images/logo.png" style="height: 100%; width: auto; max-height: 2.25rem;" alt="Course Logo">
+  <span style="margin-left: 0.5em; width: 100%">CS 188 FA25</span>
+
+</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Main" id="site-nav" class="site-nav">
+  
+  
+    <ul class="nav-list"><li class="nav-list-item"><a href="../../../exam/index.html" class="nav-list-link">Exam Logistics</a></li><li class="nav-list-item"><a href="../../../calendar/index.html" class="nav-list-link">Calendar</a></li><li class="nav-list-item"><a href="../../../policies/index.html" class="nav-list-link">Policies</a></li><li class="nav-list-item"><a href="../../../resources/index.html" class="nav-list-link">Resources</a></li><li class="nav-list-item"><a href="../../../staff/index.html" class="nav-list-link">Staff</a></li><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="Projects submenu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="../../index.html" class="nav-list-link">Projects</a><ul class="nav-list"><li class="nav-list-item"><button class="nav-list-expander btn-reset" aria-label="Project 0 submenu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use xlink:href="#svg-arrow-right"></use></svg>
+      </button><a href="../../proj0.html" class="nav-list-link">Project 0</a><ul class="nav-list"><li class="nav-list-item"><a href="../ide-workflow.html" class="nav-list-link">IDE Workflow</a></li><li class="nav-list-item"><a href="../terminal-workflow.html" class="nav-list-link">Terminal Workflow</a></li><li class="nav-list-item"><a href="../python-basics.html" class="nav-list-link">Python Basics</a></li></ul></li><li class="nav-list-item"><a href="../../proj1.html" class="nav-list-link">Project 1</a></li><li class="nav-list-item"><a href="../../proj2.html" class="nav-list-link">Project 2</a></li><li class="nav-list-item"><a href="../../proj3.html" class="nav-list-link">Project 3</a></li><li class="nav-list-item"><a href="../../proj4.html" class="nav-list-link">Project 4</a></li><li class="nav-list-item"><a href="../../proj5.html" class="nav-list-link">Project 5</a></li></ul></li><li class="nav-list-item"><a href="../../../sp26-faqs/index.html" class="nav-list-link">Spring 2026 FAQs</a></li></ul>
+  
+</nav>
+
+
+
+
+  
+  
+    <div class="site-footer">
+	Report an <a href="https://dap.berkeley.edu/get-help/report-web-accessibility-issue">accessibility issue</a>.
+
+	<br><br>
+
+	This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+</div>
+  
+</div>
+
+  
+  <div class="main" id="top">
+    <div id="main-header" class="main-header">
+  
+    
+
+<div class="search" role="search">
+  <div class="search-input-wrap">
+    <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search CS 188 Fall 2025" autocomplete="off">
+    <label for="search-input" class="search-label">
+      <span class="sr-only">Search CS 188 Fall 2025</span>
+      <svg viewBox="0 0 24 24" class="search-icon" aria-hidden="true"><use xlink:href="#svg-search"></use></svg>
+    </label>
+  </div>
+  <div id="search-results" class="search-results"></div>
+</div>
+
+  
+  
+  
+    <nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    
+      <li class="aux-nav-list-item">
+        <a href="../terminal-workflow.html#" class="site-button"
+          
+        >
+          Dark Mode
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://edstem.org/us/courses/82062/" class="site-button"
+          
+        >
+          Ed
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://cs188-oh.apps.cs61a.org/" class="site-button"
+          
+        >
+          OH Queue
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdu6GfAD99Cz0rgcVx3EQDe7US0F3l6M-ARaTGa7PZbBYN62Q/viewform" class="site-button"
+          
+        >
+          Extensions
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://inst.eecs.berkeley.edu/~cs188/textbook/" class="site-button"
+          
+        >
+          Textbook
+        </a>
+      </li>
+    
+      <li class="aux-nav-list-item">
+        <a href="https://forms.gle/jWrzBq1sThB6cu5X8" class="site-button"
+          
+        >
+          Feedback
+        </a>
+      </li>
+    
+  </ul>
+</nav>
+
+  
+</div>
+
+    <div class="main-content-wrap">
+      <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+  <ol class="breadcrumb-nav-list">
+    <li class="breadcrumb-nav-list-item"><a href="../../index.html">Projects</a></li>
+    <li class="breadcrumb-nav-list-item"><a href="../../proj0.html">Project 0</a></li>
+    <li class="breadcrumb-nav-list-item"><span>Terminal Workflow</span></li>
+  </ol>
+</nav>
+
+
+      <div id="main-content" class="main-content">
+        <main>
+          
+            <p class="WARNING">
+    This website contains materials from a past semester. Information, assignments, and announcements may no longer be
+    relevant. Please refer to the <a href="https://inst.eecs.berkeley.edu/~cs188/sp26">current semester's site</a> for up-to-date content.
+  </p><div class="content-container">
+    <nav class="content-nav nav-list js-toc" aria-label="In-page navigation">
+      <ul class="nav-list"><li class="nav-list-item"><a href="../terminal-workflow.html#unix-basics--file-directory-manipulation" class="nav-list-link">Unix Basics – File/ Directory Manipulation</a></li><li class="nav-list-item"><a href="../terminal-workflow.html#the-emacs-text-editor" class="nav-list-link">The Emacs text editor</a></li></ul>
+    </nav>
+  <div class="content">
+<h1 class="no_toc" id="terminal-workflow-example">
+  
+  
+    <a href="../terminal-workflow.html#terminal-workflow-example" class="anchor-heading" aria-labelledby="terminal-workflow-example"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Terminal Workflow Example
+  
+  
+</h1>
+    
+<h2 class="no_toc text-delta" id="table-of-contents">
+  
+  
+    <a href="../terminal-workflow.html#table-of-contents" class="anchor-heading" aria-labelledby="table-of-contents"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Table of contents
+  
+  
+</h2>
+    
+
+<ul id="markdown-toc">
+  <li><a href="../terminal-workflow.html#unix-basics--file-directory-manipulation" id="markdown-toc-unix-basics--file-directory-manipulation">Unix Basics – File/ Directory Manipulation</a></li>
+  <li><a href="../terminal-workflow.html#the-emacs-text-editor" id="markdown-toc-the-emacs-text-editor">The Emacs text editor</a></li>
+</ul><hr />
+<h2 id="unix-basics--file-directory-manipulation">
+  
+  
+    <a href="../terminal-workflow.html#unix-basics--file-directory-manipulation" class="anchor-heading" aria-labelledby="unix-basics--file-directory-manipulation"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Unix Basics – File/ Directory Manipulation
+  
+  
+</h2>
+    
+
+<p>Windows note: similar commands are available, and things like git bash will have Unix commands. To use this exactly, you can use WSL2.</p>
+
+<p>When you open a terminal window, you’re placed at a command prompt:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>cs188-ta@nova ~]<span class="err">$</span>
+</code></pre></div></div>
+
+<p>The prompt shows your username, the host you are logged onto, and your current location in the directory structure (your path). The tilde character is shorthand for your home directory. Note your prompt may look slightly different. To make a directory, use the <code class="language-plaintext highlighter-rouge">mkdir</code> command. Use <code class="language-plaintext highlighter-rouge">cd</code> to change to that directory:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>cs188-ta@nova ~]<span class="nv">$ </span><span class="nb">mkdir </span>foo
+<span class="o">[</span>cs188-ta@nova ~]<span class="nv">$ </span><span class="nb">cd </span>foo
+<span class="o">[</span>cs188-ta@nova ~/foo]<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Use <code class="language-plaintext highlighter-rouge">ls</code> to see a listing of the contents of a directory, and <code class="language-plaintext highlighter-rouge">touch</code> to create an empty file:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>cs188-ta@nova ~/foo]<span class="nv">$ </span><span class="nb">ls</span>
+<span class="o">[</span>cs188-ta@nova ~/foo]<span class="nv">$ </span><span class="nb">touch </span>hello_world
+<span class="o">[</span>cs188-ta@nova ~/foo]<span class="nv">$ </span><span class="nb">ls
+</span>hello_world
+<span class="o">[</span>cs188-ta@nova ~/foo]<span class="nv">$ </span><span class="nb">cd</span> ..
+<span class="o">[</span>cs188-ta@nova ~]<span class="err">$</span>
+</code></pre></div></div>
+
+<p>Download <a href="../../../assets/projects/python_basics.zip">python_basics.zip</a> into your home directory (note: the zip file’s name may be slightly different when you download it). Use <code class="language-plaintext highlighter-rouge">unzip</code> to extract the contents of the zip file:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>cs188-ta@nova ~]<span class="nv">$ </span><span class="nb">ls</span> <span class="k">*</span>.zip
+python_basics.zip
+<span class="o">[</span>cs188-ta@nova ~]<span class="nv">$ </span>unzip python_basics.zip
+<span class="o">[</span>cs188-ta@nova ~]<span class="nv">$ </span><span class="nb">cd </span>python_basics
+<span class="o">[</span>cs188-ta@nova ~/python_basics]<span class="nv">$ </span><span class="nb">ls
+</span>foreach.py
+helloWorld.py
+listcomp.py
+listcomp2.py
+quickSort.py
+shop.py
+shopTest.py
+</code></pre></div></div>
+
+<p>Some other useful Unix commands:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">cp</code> copies a file or files</li>
+  <li><code class="language-plaintext highlighter-rouge">rm</code> removes (deletes) a file</li>
+  <li><code class="language-plaintext highlighter-rouge">mv</code> moves a file (i.e., cut/paste instead of copy/paste)</li>
+  <li><code class="language-plaintext highlighter-rouge">man</code> displays documentation for a command</li>
+  <li><code class="language-plaintext highlighter-rouge">pwd</code> prints your current path</li>
+  <li><code class="language-plaintext highlighter-rouge">xterm</code> opens a new terminal window</li>
+  <li><code class="language-plaintext highlighter-rouge">firefox</code> opens a web browser</li>
+  <li>Press <code class="language-plaintext highlighter-rouge">Ctrl-c</code> to kill a running process</li>
+  <li>Append <code class="language-plaintext highlighter-rouge">&amp;</code> to a command to run it in the background</li>
+  <li><code class="language-plaintext highlighter-rouge">fg</code> brings a program running in the background to the foreground</li>
+</ul>
+<h2 id="the-emacs-text-editor">
+  
+  
+    <a href="../terminal-workflow.html#the-emacs-text-editor" class="anchor-heading" aria-labelledby="the-emacs-text-editor"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> The Emacs text editor
+  
+  
+</h2>
+    
+
+<p>Emacs is a customizable text editor which has some nice features specifically tailored for programmers. However, you can use any other text editor that you may prefer (such as <code class="language-plaintext highlighter-rouge">vi</code>, <code class="language-plaintext highlighter-rouge">pico</code>, or <code class="language-plaintext highlighter-rouge">joe</code> on Unix; or Notepad on Windows; or TextWrangler on OS X; and many more).</p>
+
+<p>To run Emacs, type <code class="language-plaintext highlighter-rouge">emacs</code> at a command prompt:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>cs188-ta@nova ~/python_basics]<span class="nv">$ </span>emacs helloWorld.py &amp;
+<span class="o">[</span>1] 3262
+</code></pre></div></div>
+
+<p>Here we gave the argument <code class="language-plaintext highlighter-rouge">helloWorld.py</code> which will either open that file for editing if it exists, or create it otherwise. Emacs notices that this is a Python source file (because of the <code class="language-plaintext highlighter-rouge">.py</code> ending) and enters Python-mode, which is supposed to help you write code. When editing this file you may notice some of that text becomes automatically colored: this is syntax highlighting to help you distinguish items such as keywords, variables, strings, and comments. Pressing Enter, Tab, or Backspace may cause the cursor to jump to weird locations: this is because Python is very picky about indentation, and Emacs is predicting the proper tabbing that you should use.</p>
+
+<p>Some basic Emacs editing commands (<code class="language-plaintext highlighter-rouge">C-</code> means “while holding the Ctrl-key”):</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">C-x C-s</code> Save the current file</li>
+  <li><code class="language-plaintext highlighter-rouge">C-x C-f</code> Open a file, or create a new file it if doesn’t exist</li>
+  <li><code class="language-plaintext highlighter-rouge">C-k</code> Cut a line, add it to the clipboard</li>
+  <li><code class="language-plaintext highlighter-rouge">C-y</code> Paste the contents of the clipboard</li>
+  <li><code class="language-plaintext highlighter-rouge">C-_</code> Undo</li>
+  <li><code class="language-plaintext highlighter-rouge">C-g</code> Abort a half-entered command</li>
+</ul>
+
+<p>You can also copy and paste using just the mouse. Using the left button, select a region of text to copy. Click the middle button to paste.</p>
+
+<p>There are two ways you can use Emacs to develop Python code. The most straightforward way is to use it just as a text editor: create and edit Python files in Emacs; then run Python to test the code somewhere else, like in a terminal window. Alternatively, you can run Python inside Emacs: see the options under “Python” in the menubar, or type <code class="language-plaintext highlighter-rouge">C-c !</code> to start a Python interpreter in a split screen. (Use <code class="language-plaintext highlighter-rouge">C-x o</code> to switch between the split screens, or just click if <code class="language-plaintext highlighter-rouge">C-x</code> doesn’t work).</p>
+
+  </div>
+</div>
+
+          
+
+          
+            
+          
+        </main>
+        
+
+  <hr>
+  <footer>
+    
+
+    
+
+
+
+
+
+
+
+
+
+<script>
+  (function () {
+    var navList = document.querySelector('.aux-nav-list');
+    if (!navList || !navList.firstElementChild) return;
+    var darkToggle = navList.firstElementChild;
+    darkToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleDark();
+    });
+  })();
+</script>
+
+<script src="../../../assets/js/tocbot.min.js"></script>
+<script>
+  // Tries to mirror the HTML TOC
+  tocbot.init({
+    tocSelector: '.js-toc',
+    contentSelector: '.content',
+    headingSelector: 'h2,h3,h4,h5,h6',
+    ignoreSelector: '.no_toc',
+    hasInnerContainers: true,
+    linkClass: 'nav-list-link',
+    activeLinkClass: 'active',
+    listClass: 'nav-list',
+    listItemClass: 'nav-list-item',
+    activeListItemClass: 'active',
+    collapseDepth: 3,
+    scrollSmooth: false,
+  });
+</script>
+
+
+    
+  </footer>
+
+
+      </div>
+    </div>
+    
+      
+
+<div class="search-overlay"></div>
+
+    
+  </div>
+
+  
+</body>
+</html>
+
